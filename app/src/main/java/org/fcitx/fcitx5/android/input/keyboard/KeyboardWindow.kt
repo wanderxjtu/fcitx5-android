@@ -68,11 +68,13 @@ class KeyboardWindow : InputWindow.SimpleInputWindow<KeyboardWindow>(), Essentia
     private val keyboards: HashMap<String, BaseKeyboard> by lazy {
         hashMapOf(
             TextKeyboard.Name to TextKeyboard(context, theme),
-            NumberKeyboard.Name to NumberKeyboard(context, theme)
+            NumberKeyboard.Name to NumberKeyboard(context, theme),
+            FlickKeyboard.Name to FlickKeyboard(context, theme)
         )
     }
     private var currentKeyboardName = ""
     private var lastSymbolType: String by AppPrefs.getInstance().internal.lastSymbolLayout
+    private val japaneseKeyboardLayout by AppPrefs.getInstance().keyboard.japaneseKeyboardLayout
 
     private val currentKeyboard: BaseKeyboard? get() = keyboards[currentKeyboardName]
 
@@ -142,13 +144,34 @@ class KeyboardWindow : InputWindow.SimpleInputWindow<KeyboardWindow>(), Essentia
         val targetLayout = when (info.inputType and InputType.TYPE_MASK_CLASS) {
             InputType.TYPE_CLASS_NUMBER -> NumberKeyboard.Name
             InputType.TYPE_CLASS_PHONE -> NumberKeyboard.Name
-            else -> TextKeyboard.Name
+            else -> resolveTextKeyboard()
         }
         switchLayout(targetLayout, remember = false)
     }
 
     override fun onImeUpdate(ime: InputMethodEntry) {
         currentKeyboard?.onInputMethodUpdate(ime)
+        val targetLayout = resolveTextKeyboard(ime)
+        if (currentKeyboardName == TextKeyboard.Name || currentKeyboardName == FlickKeyboard.Name) {
+            if (targetLayout != currentKeyboardName) {
+                switchLayout(targetLayout, remember = false)
+            }
+        }
+    }
+
+    private fun resolveTextKeyboard(
+        ime: InputMethodEntry? = null
+    ): String {
+        val entry = ime ?: runCatching {
+            fcitx.runImmediately { inputMethodEntryCached }
+        }.getOrNull()
+        if (entry != null && japaneseKeyboardLayout == JapaneseKeyboardLayout.Flick) {
+            val isJapanese = entry.uniqueName.contains("mozc", true)
+                    || entry.uniqueName.contains("anthy", true)
+                    || entry.languageCode == "ja"
+            if (isJapanese) return FlickKeyboard.Name
+        }
+        return TextKeyboard.Name
     }
 
     override fun onPunctuationUpdate(mapping: Map<String, String>) {
