@@ -321,4 +321,7 @@
     <string name="keyboard_height_percent_base">Keyboard height percent base</string>
     <string name="display_metrics">Display metrics (Resources.getDisplayMetrics)</string>
     <string name="real_size">Real size (Display.getRealSize)</string>
+    <string name="japanese_keyboard_layout">Japanese keyboard layout</string>
+    <string name="japanese_keyboard_qwerty">QWERTY</string>
+    <string name="japanese_keyboard_flick">Flick</string>
 </resources>

@@ -17,6 +17,7 @@ import org.fcitx.fcitx5.android.input.candidates.floating.FloatingCandidatesMode
 import org.fcitx.fcitx5.android.input.candidates.floating.FloatingCandidatesOrientation
 import org.fcitx.fcitx5.android.input.candidates.horizontal.HorizontalCandidateMode
 import org.fcitx.fcitx5.android.input.keyboard.KeyboardHeightPercentBase
+import org.fcitx.fcitx5.android.input.keyboard.JapaneseKeyboardLayout
 import org.fcitx.fcitx5.android.input.keyboard.LangSwitchBehavior
 import org.fcitx.fcitx5.android.input.keyboard.SpaceLongPressBehavior
 import org.fcitx.fcitx5.android.input.keyboard.SwipeSymbolDirection
@@ -184,6 +185,11 @@ class AppPrefs(private val sharedPreferences: SharedPreferences) {
             "lang_switch_key_behavior",
             LangSwitchBehavior.Enumerate
         ) { showLangSwitchKey.getValue() }
+        val japaneseKeyboardLayout = enumList(
+            R.string.japanese_keyboard_layout,
+            "japanese_keyboard_layout",
+            JapaneseKeyboardLayout.Flick
+        )
 
         val keyboardHeightPercent: ManagedPreference.PInt
         val keyboardHeightPercentLandscape: ManagedPreference.PInt
