@@ -19,7 +19,7 @@
 	url = https://github.com/fcitx5-android/anthy-cmake.git
 [submodule "plugin/anthy/src/main/cpp/fcitx5-anthy"]
 	path = plugin/anthy/src/main/cpp/fcitx5-anthy
-	url = https://github.com/fcitx/fcitx5-anthy.git
+	url = https://github.com/wanderxjtu/fcitx5-anthy.git
 [submodule "plugin/unikey/src/main/cpp/fcitx5-unikey"]
 	path = plugin/unikey/src/main/cpp/fcitx5-unikey
 	url = https://github.com/fcitx/fcitx5-unikey.git
