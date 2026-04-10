@@ -31,8 +31,8 @@ class FlickKeyboard(
         const val Name = "Flick"
 
         private const val KANA_WIDTH = 0.2f
-        private const val FUNC_WIDTH = 0.15f
-        private const val SIDE_WIDTH = 0.1f
+        private const val FUNC_WIDTH = 0.2f
+        private const val SIDE_WIDTH = 0.2f
 
         val Layout: List<List<KeyDef>> = listOf(
             // Row 0: [←] [あ] [か] [さ] [Backspace]
@@ -62,7 +62,7 @@ class FlickKeyboard(
             // Row 3: [🌐] [わ] [Space] [。] [Return]
             listOf(
                 LayoutSwitchKey("ABC", TextKeyboard.Name, SIDE_WIDTH),
-                LanguageKey(),
+                LanguageKey(SIDE_WIDTH),
                 FlickKanaPresets.wa(R.id.flick_key_wa),
                 SymbolKey("。", KANA_WIDTH),
                 ReturnKey(FUNC_WIDTH)

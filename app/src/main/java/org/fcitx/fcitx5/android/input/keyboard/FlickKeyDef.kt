@@ -84,5 +84,5 @@ object FlickKanaPresets {
      * Center = ゛, Left = ゜, Up = 小 (sends xtu for small-tsu behavior), Right = ゛, Down = ゜
      */
     fun toggle(viewId: Int) = kana("小゛゜", "゛", "゜", "小", "゛", "゜",
-        percentWidth = 0.15f, viewId = viewId)
+        percentWidth = 0.2f, viewId = viewId)
 }

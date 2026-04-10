@@ -67,6 +67,7 @@ class TextKeyboard(
             ),
             listOf(
                 LayoutSwitchKey("?123", ""),
+                LayoutSwitchKey("あ", FlickKeyboard.Name, 0.1f, KeyDef.Appearance.Variant.Alternative),
                 CommaKey(0.1f, KeyDef.Appearance.Variant.Alternative),
                 LanguageKey(),
                 SpaceKey(),
@@ -99,6 +100,10 @@ class TextKeyboard(
 
     private val textKeys: List<TextKeyView> by lazy {
         allViews.filterIsInstance(TextKeyView::class.java).toList()
+    }
+
+    private val kanaSwitch: TextKeyView? by lazy {
+        textKeys.firstOrNull { it.def is KeyDef.Appearance.Text && (it.def as KeyDef.Appearance.Text).displayText == "あ" }
     }
 
     private var capsState: CapsState = CapsState.None
@@ -172,6 +177,12 @@ class TextKeyboard(
         if (capsState != CapsState.None) {
             switchCapsState()
         }
+
+        val isJapaneseFlick = (ime.uniqueName.contains("mozc", true)
+                || ime.uniqueName.contains("anthy", true)
+                || ime.languageCode == "ja") && AppPrefs.getInstance().keyboard.japaneseKeyboardLayout.getValue() == org.fcitx.fcitx5.android.input.keyboard.JapaneseKeyboardLayout.Flick
+
+        kanaSwitch?.visibility = if (isJapaneseFlick) View.VISIBLE else View.GONE
     }
 
     private fun transformPopupPreview(c: String): String {
