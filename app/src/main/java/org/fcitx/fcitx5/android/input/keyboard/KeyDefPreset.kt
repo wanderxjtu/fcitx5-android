@@ -192,9 +192,10 @@ class CommaKey(
     )
 )
 
-class LanguageKey : KeyDef(
+class LanguageKey(percentWidth: Float = 0.1f) : KeyDef(
     Appearance.Image(
         src = R.drawable.ic_baseline_language_24,
+        percentWidth = percentWidth,
         variant = Variant.AltForeground,
         viewId = R.id.button_lang
     ),
