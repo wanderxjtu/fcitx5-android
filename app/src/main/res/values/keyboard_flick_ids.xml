@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="flick_key_a" type="id" />
+    <item name="flick_key_ka" type="id" />
+    <item name="flick_key_sa" type="id" />
+    <item name="flick_key_ta" type="id" />
+    <item name="flick_key_na" type="id" />
+    <item name="flick_key_ha" type="id" />
+    <item name="flick_key_ma" type="id" />
+    <item name="flick_key_ya" type="id" />
+    <item name="flick_key_ra" type="id" />
+    <item name="flick_key_wa" type="id" />
+    <item name="flick_key_toggle" type="id" />
+</resources>
