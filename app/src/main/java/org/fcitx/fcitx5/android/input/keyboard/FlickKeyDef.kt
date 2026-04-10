@@ -78,6 +78,7 @@ object FlickKanaPresets {
     fun ya(viewId: Int) = kana("や", "や", "（", "ゆ", "）", "よ", viewId = viewId)
     fun ra(viewId: Int) = kana("ら", "ら", "り", "る", "れ", "ろ", viewId = viewId)
     fun wa(viewId: Int) = kana("わ", "わ", "を", "ん", "ー", "〜", viewId = viewId)
+    fun symbol(viewId: Int) = kana("、", "、", "。", "？", "！", "……", viewId = viewId)
 
     /**
      * Toggle key for dakuten (゛), handakuten (゜), and small kana (小).

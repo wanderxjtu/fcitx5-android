@@ -53,7 +53,7 @@ class FlickKeyboard(
             ),
             // Row 2: [ABC] [ま] [や] [ら] [?123]
             listOf(
-                LayoutSwitchKey("?123", "", SIDE_WIDTH),
+                LayoutSwitchKey("?123", NumberKeyboard.Name, SIDE_WIDTH),
                 FlickKanaPresets.ma(R.id.flick_key_ma),
                 FlickKanaPresets.ya(R.id.flick_key_ya),
                 FlickKanaPresets.ra(R.id.flick_key_ra),
@@ -64,7 +64,7 @@ class FlickKeyboard(
                 LayoutSwitchKey("ABC", TextKeyboard.Name, SIDE_WIDTH),
                 LanguageKey(SIDE_WIDTH),
                 FlickKanaPresets.wa(R.id.flick_key_wa),
-                SymbolKey("。", KANA_WIDTH),
+                FlickKanaPresets.symbol(R.id.flick_key_symbol),
                 ReturnKey(FUNC_WIDTH)
             )
         )
