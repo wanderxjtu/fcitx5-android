@@ -16,20 +16,19 @@ android {
         @Suppress("UnstableApiUsage")
         externalNativeBuild {
             cmake {
-                targets(
-                    "mozc"
-                )
+                targets("mozc")
+//		abiFilters.addAll(setOf("arm64-v8a"))
             }
         }
     }
 
     buildTypes {
-        release {
-            resValue("string", "app_name", "@string/app_name_release")
-        }
-        debug {
-            resValue("string", "app_name", "@string/app_name_debug")
-        }
+        // release {
+        //     resValue("string", "app_name", "@string/app_name_release")
+        // }
+        // debug {
+        //     resValue("string", "app_name", "@string/app_name_debug")
+        // }
     }
 
     packaging {

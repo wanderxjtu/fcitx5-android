@@ -2,5 +2,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
     <application
-        android:label="@string/app_name" />
+        android:label="Fcitx5 (Mozc Plugin)" />
 </manifest>
