@@ -14,14 +14,15 @@ find_package(ECM MODULE)
 find_package(Fcitx5Core MODULE)
 find_package(Fcitx5Module MODULE)
 
-add_library(Mozc_static STATIC IMPORTED)
-set_target_properties(Mozc_static PROPERTIES
-        IMPORTED_LOCATION "${PREBUILT_DIR}/libmozc/${ANDROID_ABI}/lib/libmozc-static.a"
-        INTERFACE_INCLUDE_DIRECTORIES "${PREBUILT_DIR}/libmozc/${ANDROID_ABI}/include/mozc"
-        INTERFACE_LINK_LIBRARIES "-llog -L${PREBUILT_DIR}/libmozc/${ANDROID_ABI}/lib -labsl -lprotobuf -lutf8_validity"
-        )
+include_directories(mozc
+	"${CMAKE_CURRENT_SOURCE_DIR}/fcitx5-mozc"
+        "${PROJECT_SOURCE_DIR}/../../../../../lib/fcitx5/build/headers/usr/include"
+        "${PROJECT_SOURCE_DIR}/../../../../../lib/fcitx5/build/headers/usr/include/Fcitx5/Module"
+)
 
-set(MOZC_TARGET Mozc_static)
+set(protobuf_BUILD_PROTOC_BINARIES OFF)
+set(WITH_PROTOC "/usr/bin/protoc")
+
 add_subdirectory(fcitx5-mozc)
 
 target_include_directories(mozc PRIVATE
