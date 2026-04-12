@@ -19,6 +19,10 @@ include_directories(mozc
         "${PROJECT_SOURCE_DIR}/../../../../../lib/fcitx5/build/headers/usr/include"
         "${PROJECT_SOURCE_DIR}/../../../../../lib/fcitx5/build/headers/usr/include/Fcitx5/Module"
 )
+
+set(protobuf_BUILD_PROTOC_BINARIES OFF)
+set(WITH_PROTOC "/usr/bin/protoc")
+
 add_subdirectory(fcitx5-mozc)
 
 target_link_libraries(mozc
