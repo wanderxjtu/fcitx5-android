@@ -16,9 +16,7 @@ android {
         @Suppress("UnstableApiUsage")
         externalNativeBuild {
             cmake {
-                targets(
-                    "mozc"
-                )
+                targets("mozc")
             }
         }
     }

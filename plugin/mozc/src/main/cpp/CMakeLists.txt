@@ -25,7 +25,10 @@ set(WITH_PROTOC "/usr/bin/protoc")
 
 add_subdirectory(fcitx5-mozc)
 
-target_include_directories(mozc PRIVATE
-        "${PROJECT_SOURCE_DIR}/../../../../../lib/fcitx5/build/headers/usr/include"
-        "${PROJECT_SOURCE_DIR}/../../../../../lib/fcitx5/build/headers/usr/include/Fcitx5/Module"
-        )
+target_link_libraries(mozc
+        log
+	#absl
+	#protobuf
+        utf8_validity
+)
+
