@@ -49,7 +49,7 @@ class FlickKeyboard(
                 FlickKanaPresets.ta(R.id.flick_key_ta),
                 FlickKanaPresets.na(R.id.flick_key_na),
                 FlickKanaPresets.ha(R.id.flick_key_ha),
-                FlickKanaPresets.toggle(R.id.flick_key_toggle)
+                SymbolKey("ﾞﾟ", SIDE_WIDTH, KeyDef.Appearance.Variant.Alternative),
             ),
             // Row 2: [ABC] [ま] [や] [ら] [?123]
             listOf(
@@ -85,8 +85,78 @@ class FlickKeyboard(
     private val popupOnKeyPress by AppPrefs.getInstance().keyboard.popupOnKeyPress
     private val flickThreshold = dp(24f)
 
+    // 用于追踪最后一个输入的字符
+    private var lastInputChar: String? = null
+
     init {
         setupFlickGestures()
+    }
+    private fun getNextToggledChar(c: String): String? {
+        return when (c) {
+        // 平假名变换
+        "あ" -> "ぁ" ; "ぁ" -> "あ"
+        "い" -> "ぃ" ; "ぃ" -> "い"
+        "う" -> "ぅ" ; "ぅ" -> "ゔ" ; "ゔ" -> "う"
+        "え" -> "ぇ" ; "ぇ" -> "え"
+        "お" -> "ぉ" ; "ぉ" -> "お"
+        "か" -> "が" ; "加" -> "か"
+        "き" -> "ぎ" ; "ぎ" -> "き"
+        "く" -> "ぐ" ; "ぐ" -> "く"
+        "け" -> "げ" ; "げ" -> "け"
+        "こ" -> "ご" ; "ご" -> "こ"
+        "さ" -> "ざ" ; "ざ" -> "さ"
+        "し" -> "じ" ; "じ" -> "し"
+        "す" -> "ず" ; "ず" -> "す"
+        "せ" -> "ぜ" ; "ぜ" -> "せ"
+        "そ" -> "ぞ" ; "ぞ" -> "そ"
+        "た" -> "だ" ; "だ" -> "た"
+        "ち" -> "ぢ" ; "ぢ" -> "ち"
+        "つ" -> "っ" ; "っ" -> "づ" ; "づ" -> "つ"
+        "て" -> "で" ; "で" -> "て"
+        "と" -> "ど" ; "ど" -> "投"
+        "は" -> "ば" ; "ば" -> "ぱ" ; "ぱ" -> "は"
+        "ひ" -> "び" ; "び" -> "ぴ" ; "ぴ" -> "ひ"
+        "ふ" -> "ぶ" ; "ぶ" -> "ぷ" ; "ぷ" -> "ふ"
+        "へ" -> "べ" ; "べ" -> "ぺ" ; "ぺ" -> "へ"
+        "ほ" -> "ぼ" ; "ぼ" -> "ぽ" ; "ぽ" -> "ほ"
+        "や" -> "ゃ" ; "ゃ" -> "や"
+        "ゆ" -> "ゅ" ; "ゅ" -> "ゆ"
+        "よ" -> "ょ" ; "ょ" -> "よ"
+        "わ" -> "ゎ" ; "ゎ" -> "わ"
+        
+        // 片假名变换
+        "ア" -> "ァ" ; "ァ" -> "ア"
+        "イ" -> "ィ" ; "ィ" -> "イ"
+        "ウ" -> "ゥ" ; "ゥ" -> "ヴ" ; "ヴ" -> "ウ"
+        "エ" -> "ェ" ; "ェ" -> "エ"
+        "オ" -> "ォ" ; "ォ" -> "オ"
+        "カ" -> "ガ" ; "ガ" -> "カ"
+        "キ" -> "ギ" ; "ギ" -> "キ"
+        "ク" -> "グ" ; "グ" -> "ク"
+        "ケ" -> "ゲ" ; "ゲ" -> "ケ"
+        "コ" -> "ゴ" ; "ゴ" -> "コ"
+        "サ" -> "ザ" ; "ザ" -> "サ"
+        "シ" -> "ジ" ; "ジ" -> "シ"
+        "ス" -> "ズ" ; "ズ" -> "ス"
+        "セ" -> "ゼ" ; "ゼ" -> "セ"
+        "ソ" -> "ゾ" ; "ゾ" -> "ソ"
+        "タ" -> "ダ" ; "ダ" -> "タ"
+        "チ" -> "ヂ" ; "ヂ" -> "チ"
+        "ツ" -> "ッ" ; "ッ" -> "ヅ" ; "ヅ" -> "ツ"
+        "テ" -> "デ" ; "デ" -> "テ"
+        "ト" -> "ド" ; "ド" -> "ト"
+        "ハ" -> "バ" ; "バ" -> "パ" ; "パ" -> "ハ"
+        "ヒ" -> "ビ" ; "ビ" -> "ピ" ; "ピ" -> "ヒ"
+        "フ" -> "ブ" ; "ブ" -> "プ" ; "プ" -> "フ"
+        "ヘ" -> "ベ" ; "ベ" -> "ペ" ; "ペ" -> "ヘ"
+        "ホ" -> "ボ" ; "ボ" -> "ポ" ; "ポ" -> "ホ"
+        "ヤ" -> "ャ" ; "ャ" -> "ヤ"
+        "ユ" -> "ュ" ; "ュ" -> "ユ"
+        "约" -> "ョ" ; "ョ" -> "ヨ"
+        "ワ" -> "ヮ" ; "ヮ" -> "ワ"
+        
+        else -> null
+        }
     }
 
     /**
@@ -152,28 +222,52 @@ class FlickKeyboard(
     override fun onAction(action: KeyAction, source: KeyActionListener.Source) {
         when (action) {
             is KeyAction.FcitxKeyAction -> {
-                when (action.act) {
+		var act = action.act
+                when (act) {
+		    "ﾞﾟ" -> {
+		    lastInputChar?.let { last ->
+			val nextChar = getNextToggledChar(last)
+			if (nextChar != null) {
+			    // 发送退格
+			    super.onAction(
+				KeyAction.SymAction(KeySym(FcitxKeyMapping.FcitxKey_BackSpace), KeyStates.Virtual),
+				source
+			    )
+			    // 发送新假名
+			    super.onAction(KeyAction.FcitxKeyAction(nextChar), source)
+			    // 更新追踪状态
+			    lastInputChar = nextChar
+			    return 
+			}
+		    }
+		    // 如果没有可变换的字符，即便按了该键也直接拦截，不执行默认逻辑
+		    return 
+
+		    }
                     "←" -> {
-                        super.onAction(
-                            KeyAction.SymAction(
-                                KeySym(FcitxKeyMapping.FcitxKey_Left),
-                                KeyStates.Virtual
-                            ),
-                            source
-                        )
+                        super.onAction(KeyAction.SymAction(KeySym(FcitxKeyMapping.FcitxKey_Left), KeyStates.Virtual), source)
+                        lastInputChar = null // 移动光标后清除追踪状态
                         return
                     }
                     "→" -> {
-                        super.onAction(
-                            KeyAction.SymAction(
-                                KeySym(FcitxKeyMapping.FcitxKey_Right),
-                                KeyStates.Virtual
-                            ),
-                            source
-                        )
+                        super.onAction(KeyAction.SymAction(KeySym(FcitxKeyMapping.FcitxKey_Right), KeyStates.Virtual), source)
+                        lastInputChar = null
                         return
                     }
                 }
+
+                // 3. 如果是普通的假名输入，记录它
+                // 排除掉一些非假名的符号键
+                if (act.length == 1 && act[0].code >= 0x3000) {
+                    lastInputChar = act
+                } else {
+                    lastInputChar = null // 输入了空格或其他功能键，清除追踪
+                }
+            }
+            
+            // 如果是按下了物理回退键或其他操作，也要清除追踪状态
+            is KeyAction.SymAction -> {
+                lastInputChar = null
             }
             else -> {}
         }
