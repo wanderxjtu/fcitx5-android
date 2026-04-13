@@ -26,6 +26,9 @@ android {
     buildTypes {
         release {
             resValue("string", "app_name", "@string/app_name_release")
+            isMinifyEnabled = true
+            isShrinkResources = false
+            setProguardFiles(listOf(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro"))
         }
         debug {
             resValue("string", "app_name", "@string/app_name_debug")
@@ -39,6 +42,15 @@ android {
                 "**/libFcitx5*"
             )
         }
+    }
+    androidResources {
+        // noCompress 现在是一个 MutableSet<String> 属性
+        // 使用 += 或 addAll 来添加需要排除压缩的扩展名或后缀
+        noCompress += listOf("conf", "so", "bin", "dict")
+    }
+    buildFeatures {
+        // 显式启用 resValues 功能
+        resValues = true
     }
 }
 
