@@ -8,7 +8,6 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.ContextWrapper
 import android.inputmethodservice.InputMethodService
-import android.util.Log
 import androidx.annotation.DrawableRes
 import androidx.core.view.allViews
 import org.fcitx.fcitx5.android.R
@@ -187,15 +186,7 @@ class FlickKeyboard(context: Context, theme: Theme) : BaseKeyboard(context, them
     private fun getCharBefore(): String? {
         // 无论套了多少层 ThemeWrapper，都能安全拿到 Service
         val ims = context.unwrapToIMS() ?: return null
-        if (ims == null) {
-            Log.w("Fcitx5Flick", "Unable to get ims")
-        }
         val text = ims.currentInputConnection?.getTextBeforeCursor(1, 0)?.toString()
-        if (text != null) {
-            Log.i("Fcitx5Flick", text)
-        } else {
-            Log.i("Fcitx5Flick", "no charbefore found")
-        }
         return text
     }
 
