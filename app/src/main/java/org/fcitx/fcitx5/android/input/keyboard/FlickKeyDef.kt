@@ -79,11 +79,4 @@ object FlickKanaPresets {
     fun ra(viewId: Int) = kana("ら", "ら", "り", "る", "れ", "ろ", viewId = viewId)
     fun wa(viewId: Int) = kana("わ", "わ", "を", "ん", "-", "〜", viewId = viewId)
     fun symbol(viewId: Int) = kana("、", ",", ".", "?", "!", "...", viewId = viewId)
-
-    /**
-     * Toggle key for dakuten (゛), handakuten (゜), and small kana (小).
-     * Center = ゛, Left = ゜, Up = 小 (sends xtu for small-tsu behavior), Right = ゛, Down = ゜
-     */
-    fun toggle(viewId: Int) = kana("゛゜\n小", "゛", "゜", "小", "゛", "゜",
-        percentWidth = 0.2f, viewId = viewId)
 }

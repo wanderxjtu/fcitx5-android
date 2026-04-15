@@ -49,7 +49,16 @@ class FlickKeyboard(context: Context, theme: Theme) : BaseKeyboard(context, them
                     FlickKanaPresets.ta(R.id.flick_key_ta),
                     FlickKanaPresets.na(R.id.flick_key_na),
                     FlickKanaPresets.ha(R.id.flick_key_ha),
-                    SymbolKey("ﾞﾟ", SIDE_WIDTH, KeyDef.Appearance.Variant.Alternative),
+                    KeyDef(
+                        KeyDef.Appearance.AltText(
+                            displayText = "゛゜",
+                            altText = "大⇔小",
+                            textSize = 23f,
+                            percentWidth = SIDE_WIDTH,
+                            variant = KeyDef.Appearance.Variant.Alternative
+                        ),
+                        setOf(KeyDef.Behavior.Press(KeyAction.FcitxKeyAction("ﾞﾟ")))
+                    ),
                 ),
                 // Row 2: [ABC] [ま] [や] [ら] [?123]
                 listOf(
