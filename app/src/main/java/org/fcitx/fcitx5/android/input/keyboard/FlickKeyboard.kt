@@ -8,6 +8,8 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.ContextWrapper
 import android.inputmethodservice.InputMethodService
+import android.os.Handler
+import android.os.Looper
 import androidx.annotation.DrawableRes
 import androidx.core.view.allViews
 import org.fcitx.fcitx5.android.R
@@ -84,6 +86,7 @@ class FlickKeyboard(context: Context, theme: Theme) : BaseKeyboard(context, them
                 (it.appearance as KeyDef.Appearance.Text).viewId
             }
         }
+        private val toggleHandler = Handler(Looper.getMainLooper())
     }
 
     val `return`: ImageKeyView by lazy { findViewById(R.id.button_return) }
@@ -105,7 +108,7 @@ class FlickKeyboard(context: Context, theme: Theme) : BaseKeyboard(context, them
             "う" -> "ぅ" ; "ぅ" -> "ゔ" ; "ゔ" -> "う"
             "え" -> "ぇ" ; "ぇ" -> "え"
             "お" -> "ぉ" ; "ぉ" -> "お"
-            "か" -> "が" ; "加" -> "か"
+            "か" -> "が" ; "が" -> "か"
             "き" -> "ぎ" ; "ぎ" -> "き"
             "く" -> "ぐ" ; "ぐ" -> "く"
             "け" -> "げ" ; "げ" -> "け"
@@ -192,13 +195,6 @@ class FlickKeyboard(context: Context, theme: Theme) : BaseKeyboard(context, them
         }
     }
 
-    private fun getCharBefore(): String? {
-        // 无论套了多少层 ThemeWrapper，都能安全拿到 Service
-        val ims = context.unwrapToIMS() ?: return null
-        val text = ims.currentInputConnection?.getTextBeforeCursor(1, 0)?.toString()
-        return text
-    }
-
     /** Handle ← and → symbol keys for cursor movement. */
     override fun onAction(action: KeyAction, source: KeyActionListener.Source) {
         when (action) {
@@ -207,7 +203,10 @@ class FlickKeyboard(context: Context, theme: Theme) : BaseKeyboard(context, them
                 when (act) {
                     "ﾞﾟ" -> {
                         var char = lastKana
-                        if (char == null) char = getCharBefore()
+                        if (char == null) {
+                            val ic = context.unwrapToIMS()?.currentInputConnection
+                            char = ic?.getTextBeforeCursor(1, 0)?.toString()
+                        }
 
                         if (!char.isNullOrEmpty()) {
                             val nextChar = getNextToggledChar(char)
@@ -221,8 +220,10 @@ class FlickKeyboard(context: Context, theme: Theme) : BaseKeyboard(context, them
                                     source,
                                 )
                                 // 2. 发送新字符
+                                toggleHandler.postDelayed({
                                 super.onAction(KeyAction.FcitxKeyAction(nextChar), source)
                                 lastKana = nextChar
+                                }, 40)
                                 return // 拦截成功
                             }
                         }
