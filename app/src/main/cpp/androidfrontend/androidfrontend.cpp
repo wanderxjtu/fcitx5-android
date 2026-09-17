@@ -309,6 +309,7 @@ private:
     CandidateEntity candidateEntityWithLabel(const Text &label, const CandidateWord &candidate) {
         return CandidateEntity(filterString(label), filterString(candidate.text()),
                                filterString(candidate.comment()), candidate.spaceBetweenComment());
+    }
     inline std::string filterCandidate(const CandidateWord &candidate) {
         const std::string separator = " ";
         return filterString(candidate.textWithComment(separator));
