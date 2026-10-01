@@ -21,7 +21,8 @@ include_directories(mozc
 )
 
 set(protobuf_BUILD_PROTOC_BINARIES OFF)
-set(WITH_PROTOC "/usr/bin/protoc")
+include(GetProtoc.cmake)
+#set(WITH_PROTOC "/usr/bin/protoc")
 
 add_subdirectory(fcitx5-mozc)
 
